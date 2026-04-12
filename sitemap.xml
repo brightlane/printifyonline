@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://brightlane.github.io/</loc>
-    <lastmod>2026-04-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://brightlane.github.io/sites/example-keyword-1/</loc>
-    <lastmod>2026-04-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://brightlane.github.io/</loc><lastmod>2026-04-12</lastmod><priority>1.0</priority></url>
+  <url><loc>https://brightlane.github.io/sites/custom-organic-cotton-hoodie/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/personalized-ceramic-coffee-mug/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/vintage-wash-oversized-tshirt/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/eco-friendly-canvas-tote-bag/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/custom-pet-portrait-fleece-blanket/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/minimalist-embroidered-sweatshirt/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/personalized-stainless-steel-water-bottle/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/aesthetic-graphic-print-tee/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/custom-durable-laptop-sleeve/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/sites/personalized-holiday-ornament/</loc><lastmod>2026-04-12</lastmod><priority>0.8</priority></url>
 </urlset>
