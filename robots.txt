@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Direct Google to your automated sitemap
+Sitemap: https://brightlane.github.io/sitemap.xml
+
+# Prevent crawlers from getting stuck in technical folders
+Disallow: /__pycache__/
+Disallow: /github/
