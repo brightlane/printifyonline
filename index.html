@@ -1,1 +1,80 @@
-printify
+
+Name		
+brightlane
+brightlane
+Create README.md
+f3422d5
+ · 
+1 minute ago
+.github/workflows
+Update daily_rollout.yml
+16 minutes ago
+sites
+Automated SEO Rollout: +10 Sites & Sitemap Update
+9 minutes ago
+404.html
+Create 404.html
+6 minutes ago
+README.md
+Create README.md
+1 minute ago
+blog.html
+Create blog.html
+5 minutes ago
+generator.py
+Update generator.py
+11 minutes ago
+index.html
+Create index.html
+35 minutes ago
+keywords.csv
+Automated SEO Rollout: +10 Sites & Sitemap Update
+9 minutes ago
+legal.html
+Create legal.html
+2 minutes ago
+robots.txt
+Create robots.txt
+8 minutes ago
+sitemap.xml
+Automated SEO Rollout: +10 Sites & Sitemap Update
+9 minutes ago
+Repository files navigation
+README
+🚀 Brightlane Perpetual SEO Engine (2026 Edition)
+This is a fully automated, headless affiliate marketing machine. It programmatically generates high-converting landing pages for Printify products, auto-updates a Google-ready sitemap, and manages a growing keyword database—all via GitHub Actions.
+
+🛠️ System Architecture
+Component	Purpose	Status
+generator.py	The Engine: Builds pages, refills keywords, updates sitemap.	🟢 Active
+keywords.csv	The Fuel: Database of target keywords and launch status.	🟢 Ready
+.github/workflows/	The Pulse: Triggers the rollout every night at 00:00 UTC.	🟢 Scheduled
+sitemap.xml	The Map: Notifies Google of new content automatically.	🟢 Auto-Gen
+⚙️ How It Works
+Drip-Feed Rollout: Every 24 hours, the GitHub Action wakes up and processes the next 10 keywords from keywords.csv.
+Auto-Generation: It creates a dedicated directory in /sites/ with an optimized index.html featuring:
+JSON-LD Schema: To get Product Rich Snippets in Google.
+Printify Affiliate Link: Hardcoded to your specific ID.
+Responsive UI: Clean, modern design optimized for mobile conversions.
+Perpetual Fueling: If the pending keyword count drops below 20, the script automatically generates 50 new niche-specific keywords and appends them to the CSV.
+Automatic Indexing: The sitemap.xml is rebuilt and pushed back to the repo, signaling Google's crawlers via the robots.txt pointer.
+📈 Monitoring & Maintenance
+To Add Custom Keywords:
+Simply open keywords.csv and add your specific long-tail terms in the following format: your-keyword-here,pending,
+
+To Trigger an Immediate Rollout:
+Navigate to the Actions tab.
+Select Daily SEO CSV Rollout.
+Click Run workflow -> Branch: main.
+Affiliate Tracking:
+All traffic is funneled through the affiliate identifier: r3xsnwqufe8t.
+
+🛡️ Legal & Compliance
+The site includes a centralized legal.html covering:
+
+Affiliate Disclosures
+Privacy Policy
+Printify Official Support Contact
+Exit-Intent Capture: Cookie-based modal to catch bouncing traffic.
+Admin: brightlane
+Host: brightlane.github.io
