@@ -1,4 +1,4 @@
-name: Daily SEO Auto-Pilot (Google Version)
+name: Daily CSV Rollout
 on:
   schedule:
     - cron: '0 0 * * *' 
@@ -8,27 +8,22 @@ permissions:
   contents: write
 
 jobs:
-  automate:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          
-      - name: Install Google API Libraries
-        run: pip install pandas google-api-python-client google-auth requests
-        
-      - name: Run Engine
-        env:
-          GOOGLE_JSON_KEY: ${{ secrets.GOOGLE_JSON_KEY }}
+      - name: Install Pandas
+        run: pip install pandas
+      - name: Run Generator
         run: python generator.py
-        
-      - name: Push Changes
+      - name: Commit Changes
         run: |
           git config --local user.name 'github-actions[bot]'
           git config --local user.email 'github-actions[bot]@users.noreply.github.com'
-          git add keywords.csv sites/
-          git diff --staged --quiet || (git commit -m "Google SEO Rollout: 10 Sites" && git push origin main)
+          git add keywords.csv sites/ sitemap.xml
+          git commit -m "Added 10 new sites and updated sitemap" || echo "No changes"
+          git push
