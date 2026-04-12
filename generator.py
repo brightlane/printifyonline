@@ -1,96 +1,60 @@
 import pandas as pd
 import os
-import json
 import datetime
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
 
-# --- CONFIGURATION ---
+# --- CONFIG ---
 AFFILIATE_URL = "https://try.printify.com/r3xsnwqufe8t"
-HOST = "brightlane.github.io" # Update this if you use a new domain
+HOST = "brightlane.github.io"
 
-# --- GOOGLE AUTHENTICATION ---
-def get_google_service():
-    # Pulls the JSON key from the GitHub Secret you set up in Step 2
-    service_info = json.loads(os.getenv("GOOGLE_JSON_KEY"))
-    credentials = service_account.Credentials.from_service_account_info(service_info)
-    scoped_credentials = credentials.with_scopes(['https://www.googleapis.com/auth/indexing'])
-    return build('indexing', 'v3', credentials=scoped_credentials)
-
-# --- GOOGLE INDEXING PING ---
-def ping_google(url, service):
-    body = {"url": url, "type": "URL_UPDATED"}
-    try:
-        service.urlNotifications().publish(body=body).execute()
-        print(f"Google Indexed: {url}")
-    except Exception as e:
-        print(f"Google API Error for {url}: {e}")
-
-# --- SCHEMA GENERATOR (For Google Rich Results) ---
-def generate_schema(keyword):
-    return f"""
-    <script type="application/ld+json">
-    {{
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      "name": "{keyword}",
-      "description": "Custom {keyword} available now. High-quality print-on-demand.",
-      "brand": {{ "@type": "Brand", "name": "Brightlane Printify" }},
-      "offers": {{
-        "@type": "Offer",
-        "url": "{AFFILIATE_URL}",
-        "priceCurrency": "USD",
-        "price": "29.99",
-        "availability": "https://schema.org/InStock"
-      }}
-    }}
-    </script>
-    """
+def update_sitemap(all_keywords):
+    now = datetime.date.today().isoformat()
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap.org/0.9">']
+    
+    # Home Page
+    xml.append(f'<url><loc>https://{HOST}/</loc><lastmod>{now}</lastmod><priority>1.0</priority></url>')
+    
+    # Only add 'completed' sites to the sitemap
+    for index, row in all_keywords[all_keywords['status'] == 'completed'].iterrows():
+        slug = row['keyword'].replace(" ", "-").lower()
+        xml.append(f'<url><loc>https://{HOST}/sites/{slug}/</loc><lastmod>{now}</lastmod><priority>0.8</priority></url>')
+    
+    xml.append('</urlset>')
+    with open('sitemap.xml', 'w') as f:
+        f.write('\n'.join(xml))
 
 def run_engine():
-    if not os.path.exists('keywords.csv'): return
-    
     df = pd.read_csv('keywords.csv')
     batch = df[df['status'] == 'pending'].head(10)
     
-    if batch.empty: return
-
-    service = get_google_service()
-    new_urls = []
+    if batch.empty:
+        print("No pending keywords left!")
+        return
 
     for index, row in batch.iterrows():
         kw = row['keyword']
         slug = kw.replace(" ", "-").lower()
         os.makedirs(f"sites/{slug}", exist_ok=True)
         
-        # Build the HTML with your Schema and Affiliate Link
-        html_content = f"""
+        # Optimized HTML with your Printify Link
+        html = f"""
         <html>
-        <head>
-            <title>{kw} | Custom Designs</title>
-            {generate_schema(kw)}
-            <style>body{{font-family:sans-serif; text-align:center; padding:50px;}} .btn{{background:#00e676; padding:20px; color:black; text-decoration:none; border-radius:50px; font-weight:bold;}}</style>
-        </head>
-        <body>
-            <h1>Get your custom {kw}</h1>
-            <p>High quality, fast shipping, and unique designs.</p>
-            <br><br>
-            <a href="{AFFILIATE_URL}" class="btn">SHOP NOW ON PRINTIFY</a>
+        <head><title>{kw} | Custom Shop</title></head>
+        <body style="text-align:center; padding:50px; font-family:sans-serif;">
+            <h1>Custom {kw} Designs</h1>
+            <p>Premium quality print-on-demand items.</p>
+            <a href="{AFFILIATE_URL}" style="background:#00e676; color:black; padding:20px; text-decoration:none; border-radius:50px; font-weight:bold;">SHOP ON PRINTIFY</a>
         </body>
-        </html>
-        """
+        </html>"""
         
         with open(f"sites/{slug}/index.html", "w") as f:
-            f.write(html_content)
-        
-        url = f"https://{HOST}/sites/{slug}/"
-        new_urls.append(url)
-        ping_google(url, service)
-        
+            f.write(html)
+            
         df.at[index, 'status'] = 'completed'
         df.at[index, 'date_launched'] = datetime.date.today().isoformat()
 
+    # Save CSV and Update Sitemap
     df.to_csv('keywords.csv', index=False)
+    update_sitemap(df)
 
 if __name__ == "__main__":
     run_engine()
