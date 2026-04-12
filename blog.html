@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Design Blog | Latest Trends 2026</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background: #f9f9f9; }
+        header { text-align: center; padding: 40px 0; }
+        .post-list { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .post-item { border-bottom: 1px solid #eee; padding: 15px 0; display: flex; justify-content: space-between; align-items: center; }
+        .post-item:last-child { border-bottom: none; }
+        .post-item a { text-decoration: none; color: #2563eb; font-weight: 600; text-transform: capitalize; }
+        .post-item a:hover { color: #1d4ed8; }
+        .date { color: #94a3b8; font-size: 0.85rem; }
+        .cta-banner { background: #00e676; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 30px; }
+        .cta-banner a { color: #000; font-weight: bold; text-decoration: none; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Custom Product Insights</h1>
+        <p>Exploring the best in print-on-demand for 2026.</p>
+    </header>
+
+    <div class="cta-banner">
+        <a href="https://try.printify.com/r3xsnwqufe8t">🚀 Design Your Own Collection on Printify →</a>
+    </div>
+
+    <div class="post-list" id="blog-posts">
+        <h3>Recent Design Launches</h3>
+        <div id="loading">Loading latest trends...</div>
+    </div>
+
+    <script>
+        // Automatically fetch links from your sitemap to show on the blog
+        fetch('/sitemap.xml')
+            .then(response => response.text())
+            .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+            .then(data => {
+                const urls = data.querySelectorAll("url loc");
+                const list = document.getElementById('blog-posts');
+                const loading = document.getElementById('loading');
+                loading.style.display = 'none';
+
+                urls.forEach(loc => {
+                    const url = loc.textContent;
+                    // Only show links that are in the /sites/ subfolder
+                    if (url.includes('/sites/')) {
+                        const title = url.split('/').filter(Boolean).pop().replace(/-/g, ' ');
+                        const item = document.createElement('div');
+                        item.className = 'post-item';
+                        item.innerHTML = `<a href="${url}">${title}</a> <span class="date">Live Now</span>`;
+                        list.appendChild(item);
+                    }
+                });
+            })
+            .catch(err => {
+                document.getElementById('loading').innerText = "Visit our shop for the latest designs.";
+            });
+    </script>
+</body>
+</html>
