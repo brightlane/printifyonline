@@ -1,29 +1,37 @@
-name: Daily CSV Rollout
+name: Daily SEO CSV Rollout
 on:
   schedule:
     - cron: '0 0 * * *' 
-  workflow_dispatch:
+  workflow_dispatch: # Allows you to run it manually
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  automate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
+      
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+          
       - name: Install Pandas
         run: pip install pandas
-      - name: Run Generator
+        
+      - name: Run SEO Engine
         run: python generator.py
-      - name: Commit Changes
+        
+      - name: Save Changes to GitHub
         run: |
           git config --local user.name 'github-actions[bot]'
           git config --local user.email 'github-actions[bot]@users.noreply.github.com'
           git add keywords.csv sites/ sitemap.xml
-          git commit -m "Added 10 new sites and updated sitemap" || echo "No changes"
-          git push
+          if git diff --staged --quiet; then
+            echo "No new pages generated today."
+          else
+            git commit -m "Automated SEO Rollout: +10 Sites & Sitemap Update"
+            git push origin main
+          fi
